@@ -1,0 +1,5 @@
+*.bpf.o
+src/vmlinux.h
+*.tar.gz
+*.rpm
+output/

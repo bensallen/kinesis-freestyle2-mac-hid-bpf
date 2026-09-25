@@ -1,0 +1,10 @@
+# Kinesis Freestyle2 for Mac (KB800HM) — consumer control descriptor fixup.
+#
+# udev-hid-bpf looks up this hwdb entry during the hid bind action (see
+# /usr/lib/udev/rules.d/81-hid-bpf.rules) and loads the listed BPF object.
+# The HID_BPF_ prefix index must not collide with the generated
+# 81-hid-bpf-stable.hwdb, which uses HID_BPF_S_NNN. Use a distinct prefix.
+
+hid-bpf:hid:b0003g0001v0000058Fp00009410
+  HID_BPF_KINESIS_000=0010-Kinesis__Freestyle2-Mac.bpf.o
+  .HID_BPF=1

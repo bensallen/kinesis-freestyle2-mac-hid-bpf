@@ -91,6 +91,45 @@ instead.
 `APPLE_RDESC_JIS`, and binding via `new_id` passes `driver_data = 0`. It
 cannot alter logical min/max.
 
+## Keymap fixups
+
+Once the descriptor is patched, the consumer keys reach userspace but two
+pairs still carry the wrong keycodes. The package ships a hwdb keymap for
+these.
+
+**Brightness.** The two brightness keys are on interface 0 and send keyboard
+page usages `0x69`/`0x6A`, which the kernel maps to `KEY_F14`/`KEY_F15`. That
+is the Apple convention — macOS interprets F14/F15 on this keyboard as
+brightness down/up. Linux has no equivalent default, so the keys arrive as
+bare function keys and nothing happens.
+
+**Track skip.** The transport keys are labelled with skip icons and act as
+track skip on macOS, but the firmware sends consumer usages `0x0B3` Fast
+Forward and `0x0B4` Rewind rather than `0x0B5`/`0x0B6` Scan Next/Previous
+Track. Applications that honour the distinction — Chrome, and therefore
+YouTube Music — seek a few seconds instead of changing track.
+
+The remaining top-row keys are already correct and are deliberately left
+alone:
+
+| Scancode | Keycode | |
+|---|---|---|
+| `70069` | `KEY_F14` | remapped to `brightnessdown` |
+| `7006a` | `KEY_F15` | remapped to `brightnessup` |
+| `c00b3` | `KEY_FASTFORWARD` | remapped to `nextsong` |
+| `c00b4` | `KEY_REWIND` | remapped to `previoussong` |
+| `c00cd` | `KEY_PLAYPAUSE` | correct |
+| `c00e2` | `KEY_MUTE` | correct |
+| `c00e9` | `KEY_VOLUMEUP` | correct |
+| `c00ea` | `KEY_VOLUMEDOWN` | correct |
+| `c00b8` | `KEY_EJECTCD` | correct; GNOME has no useful action for it |
+
+To capture scancodes for further remapping:
+
+```bash
+sudo ./tools/capture-keys.py
+```
+
 ## Requirements
 
 - Kernel with `CONFIG_HID_BPF=y` and `CONFIG_DEBUG_INFO_BTF=y` (6.3+)

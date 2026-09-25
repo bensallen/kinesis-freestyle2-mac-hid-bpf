@@ -4,6 +4,7 @@ BPF_SRC  := src/Kinesis__Freestyle2-Mac.bpf.c
 VMLINUX  := src/vmlinux.h
 
 HWDB     := hwdb.d/81-hid-bpf-kinesis-freestyle2-mac.hwdb
+KEYMAP   := hwdb.d/61-keyboard-kinesis-freestyle2-mac.hwdb
 MODPROBE := modprobe.d/blacklist-hid-maltron.conf
 
 CLANG    ?= clang
@@ -34,11 +35,13 @@ $(BPF_OBJ): $(BPF_SRC) $(VMLINUX)
 install: $(BPF_OBJ)
 	install -D -m 0644 $(BPF_OBJ)  $(DESTDIR)$(BPFDIR)/$(BPF_OBJ)
 	install -D -m 0644 $(HWDB)     $(DESTDIR)$(HWDBDIR)/$(notdir $(HWDB))
+	install -D -m 0644 $(KEYMAP)   $(DESTDIR)$(HWDBDIR)/$(notdir $(KEYMAP))
 	install -D -m 0644 $(MODPROBE) $(DESTDIR)$(MODDIR)/$(notdir $(MODPROBE))
 
 uninstall:
 	rm -f $(DESTDIR)$(BPFDIR)/$(BPF_OBJ)
 	rm -f $(DESTDIR)$(HWDBDIR)/$(notdir $(HWDB))
+	rm -f $(DESTDIR)$(HWDBDIR)/$(notdir $(KEYMAP))
 	rm -f $(DESTDIR)$(MODDIR)/$(notdir $(MODPROBE))
 
 inspect: $(BPF_OBJ)

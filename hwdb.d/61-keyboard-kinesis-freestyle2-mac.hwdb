@@ -1,0 +1,21 @@
+# Kinesis Freestyle2 for Mac (KB800HM) keymap fixups.
+#
+# Matches both USB interfaces. Interface 0 is the keyboard collection
+# (keyboard page scancodes, 700xx); interface 1 is the consumer control
+# collection (consumer page scancodes, c00xx). The scancode namespaces do not
+# overlap, so a single match block covers both.
+
+evdev:input:b0003v058Fp9410*
+# The top-row brightness keys send keyboard page usages 0x69/0x6A, which the
+# kernel maps to F14/F15. That is the Apple convention: macOS interprets
+# F14/F15 on this keyboard as brightness down/up. Linux has no such default,
+# so the keys land as bare function keys and nothing happens.
+ KEYBOARD_KEY_70069=brightnessdown
+ KEYBOARD_KEY_7006a=brightnessup
+# The transport keys are labelled with track-skip icons and behave as track
+# skip on macOS, but the firmware sends Fast Forward / Rewind rather than
+# Scan Next Track / Scan Previous Track. Applications that honour the
+# distinction (Chrome, and therefore YouTube Music) seek by a few seconds
+# instead of changing track.
+ KEYBOARD_KEY_c00b3=nextsong
+ KEYBOARD_KEY_c00b4=previoussong

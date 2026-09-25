@@ -51,6 +51,13 @@ This package ships a HID-BPF program that inserts the missing Logical
 Minimum/Maximum into the report descriptor at probe time, making the media
 keys work without a userspace daemon.
 
+It also ships a hwdb keymap that corrects two further quirks. The brightness
+keys send keyboard usages 0x69/0x6A, which the kernel maps to F14/F15 in the
+Apple convention, so they are remapped to brightnessdown/brightnessup. The
+transport keys send Fast Forward / Rewind rather than Scan Next / Previous
+Track, which makes applications seek within a track instead of skipping, so
+they are remapped to nextsong/previoussong.
+
 It also blacklists hid-maltron. That driver claims the same 058F:9410
 VID/PID but its report_fixup only fires on an exact match against the
 106-byte Maltron L90 descriptor, so it binds the Kinesis and does nothing
@@ -90,6 +97,7 @@ EOF
 %doc README.md
 %{bpfdir}/%{bpfobj}
 %{_udevhwdbdir}/81-hid-bpf-kinesis-freestyle2-mac.hwdb
+%{_udevhwdbdir}/61-keyboard-kinesis-freestyle2-mac.hwdb
 %{_modprobedir}/blacklist-hid-maltron.conf
 
 %changelog

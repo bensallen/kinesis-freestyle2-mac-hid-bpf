@@ -23,6 +23,8 @@ Source0:        %{name}-%{version}.tar.gz
 
 BuildRequires:  clang
 BuildRequires:  bpftool
+# Provides bpf/bpf_helpers.h and bpf/bpf_tracing.h
+BuildRequires:  libbpf-devel
 BuildRequires:  make
 BuildRequires:  systemd-rpm-macros
 
